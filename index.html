@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>PHP Checklist – 200 Ejercicios</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+:root{
+  --facil:#4caf50;
+  --media:#ff9800;
+  --dificil:#f44336;
+  --bg:#f5f7fa;
+  --text:#222;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI, sans-serif;background:var(--bg);color:var(--text)}
+header{background:#fff;padding:1rem;position:sticky;top:0;z-index:1000;box-shadow:0 2px 4px rgba(0,0,0,.1)}
+header h1{margin:0 0 .5rem;font-size:1.5rem}
+#search{width:100%;padding:.5rem;font-size:1rem;border:1px solid #ccc;border-radius:4px}
+main{padding:1rem}
+.section{margin-bottom:2rem}
+.section h2{margin:0 0 .5rem;font-size:1.3rem;display:flex;align-items:center;gap:.5rem}
+.facil h2{color:var(--facil)}
+.media h2{color:var(--media)}
+.dificil h2{color:var(--dificil)}
+.progress-bar{height:10px;background:#ddd;border-radius:5px;overflow:hidden;margin:.5rem 0 1rem}
+.progress-fill{height:100%;transition:width .3s}
+.facil .progress-fill{background:var(--facil)}
+.media .progress-fill{background:var(--media)}
+.dificil .progress-fill{background:var(--dificil)}
+ul{list-style:none;padding:0;margin:0}
+li{background:#fff;margin-bottom:.5rem;padding:.75rem;border-left:5px solid;border-radius:4px;display:flex;align-items:flex-start;gap:.75rem}
+.facil li{border-color:var(--facil)}
+.media li{border-color:var(--media)}
+.dificil li{border-color:var(--dificil)}
+input[type=checkbox]{margin-top:.2rem;transform:scale(1.2)}
+label{flex:1;cursor:pointer}
+label strong{display:block;font-size:1rem}
+label small{color:#666}
+footer{text-align:center;padding:1rem}
+button{padding:.5rem 1rem;font-size:1rem;background:#e0e0e0;border:none;border-radius:4px;cursor:pointer}
+button:hover{background:#ccc}
+@media(max-width:600px){header h1{font-size:1.2rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🐘 PHP Checklist – 200 Ejercicios</h1>
+  <input id="search" type="text" placeholder="🔍 Buscar ejercicio..." />
+</header>
+
+<main id="checklist">
+  <!-- Se llena dinámicamente -->
+</main>
+
+<footer>
+  <button onclick="resetProgress()">🔄 Reiniciar progreso</button>
+</footer>
+
+<script>
+/* ---------- Datos ---------- */
+const data = {
+  facil: [
+    {id:1,title:"Imprime 'Hola, mundo'",hint:"Usa echo",learn:"Sintaxis básica"},
+    {id:2,title:"Declara una variable $nombre y muéstrala",hint:"Concatena con .",learn:"Variables y cadenas"},
+    {id:3,title:"Suma dos números",hint:"$a + $b",learn:"Operadores aritméticos"},
+    {id:4,title:"Resta dos números",hint:"$a - $b",learn:"Operadores aritméticos"},
+    {id:5,title:"Multiplica dos números",hint:"$a * $b",learn:"Operadores aritméticos"},
+    {id:6,title:"Divide dos números",hint:"$a / $b",learn:"División y tipos de datos"},
+    {id:7,title:"Módulo de dos números",hint:"$a % $b",learn:"Resto de división"},
+    {id:8,title:"Potencia de un número",hint:"$a ** $b",learn:"Operador de potencia"},
+    {id:9,title:"Incrementa una variable",hint:"$x++",learn:"Incremento"},
+    {id:10,title:"Decrementa una variable",hint:"$x--",learn:"Decremento"},
+    {id:11,title:"Concatena dos strings",hint:"$a . $b",learn:"Operador de concatenación"},
+    {id:12,title:"Convierte string a int",hint:"(int) o intval()",learn:"Casting"},
+    {id:13,title:"Convierte int a string",hint:"(string) o strval()",learn:"Casting"},
+    {id:14,title:"Define una constante",hint:"define()",learn:"Constantes"},
+    {id:15,title:"Verifica si una variable está definida",hint:"isset()",learn:"Validación"},
+    {id:16,title:"Verifica si una variable está vacía",hint:"empty()",learn:"Validación"},
+    {id:17,title:"Crea un array indexado",hint:"$arr = [1,2,3]",learn:"Arrays indexados"},
+    {id:18,title:"Accede al primer elemento de un array",hint:"$arr[0]",learn:"Índices"},
+    {id:19,title:"Cuenta elementos de un array",hint:"count()",learn:"Funciones de array"},
+    {id:20,title:"Recorre un array con foreach",hint:"foreach($arr as $v)",learn:"Bucles"},
+    {id:21,title:"Suma todos los elementos de un array",hint:"Acumulador",learn:"Bucles y arrays"},
+    {id:22,title:"Encuentra el valor máximo en un array",hint:"max()",learn:"Funciones integradas"},
+    {id:23,title:"Encuentra el valor mínimo en un array",hint:"min()",learn:"Funciones integradas"},
+    {id:24,title:"Ordena un array ascendente",hint:"sort()",learn:"Ordenamiento"},
+    {id:25,title:"Ordena un array descendente",hint:"rsort()",learn:"Ordenamiento"},
+    {id:26,title:"Crea un array asociativo",hint:"$user = ['nom'=>'Ana']",learn:"Arrays asociativos"},
+    {id:27,title:"Accede a un valor por clave",hint:"$user['nom']",learn:"Arrays asociativos"},
+    {id:28,title:"Recorre un array asociativo",hint:"foreach($arr as $k=>$v)",learn:"Bucles"},
+    {id:29,title:"Añade un elemento al final de un array",hint:"[] o array_push()",learn:"Manipulación de arrays"},
+    {id:30,title:"Elimina el último elemento",hint:"array_pop()",learn:"Manipulación de arrays"},
+    {id:31,title:"Elimina el primer elemento",hint:"array_shift()",learn:"Manipulación de arrays"},
+    {id:32,title:"Añade un elemento al inicio",hint:"array_unshift()",learn:"Manipulación de arrays"},
+    {id:33,title:"Comprueba si un valor existe en array",hint:"in_array()",learn:"Búsqueda"},
+    {id:34,title:"Comprueba si una clave existe",hint:"array_key_exists()",learn:"Búsqueda"},
+    {id:35,title:"Une dos arrays",hint:"array_merge()",learn:"Combinación"},
+    {id:36,title:"Revierte un array",hint:"array_reverse()",learn:"Reversión"},
+    {id:37,title:"Filtra valores pares de un array",hint:"array_filter()",learn:"Filtrado"},
+    {id:38,title:"Crea un array con 10 números aleatorios",hint:"rand()",learn:"Números aleatorios"},
+    {id:39,title:"Genera un string aleatorio",hint:"str_shuffle()",learn:"Strings aleatorios"},
+    {id:40,title:"Muestra la fecha actual",hint:"date('Y-m-d')",learn:"Fechas"},
+    {id:41,title:"Muestra la hora actual",hint:"date('H:i:s')",learn:"Fechas"},
+    {id:42,title:"Crea un timestamp actual",hint:"time()",learn:"Timestamps"},
+    {id:43,title:"Calcula días entre dos fechas",hint:"DateTime::diff()",learn:"Diferencia de fechas"},
+    {id:44,title:"Valida una fecha",hint:"checkdate()",learn:"Validación de fechas"},
+    {id:45,title:"Crea una función sin parámetros",hint:"function hola(){}",learn:"Funciones"},
+    {id:46,title:"Crea una función con parámetros",hint:"function suma($a,$b)",learn:"Funciones"},
+    {id:47,title:"Crea una función con valor por defecto",hint:"function saludo($n='Mundo')",learn:"Parámetros opcionales"},
+    {id:48,title:"Retorna un valor desde una función",hint:"return",learn:"Valores de retorno"},
+    {id:49,title:"Usa include para incluir un archivo",hint:"include 'file.php'",learn:"Inclusión de archivos"},
+    {id:50,title:"Usa require para incluir un archivo",hint:"require 'file.php'",learn:"Inclusión obligatoria"},
+    {id:51,title:"Usa include_once",hint:"include_once",learn:"Evitar duplicados"},
+    {id:52,title:"Usa require_once",hint:"require_once",learn:"Evitar duplicados"},
+    {id:53,title:"Usa $_GET para leer parámetros URL",hint:"$_GET['id']",learn:"Superglobal GET"},
+    {id:54,title:"Usa $_POST para leer formularios",hint:"$_POST['email']",learn:"Superglobal POST"},
+    {id:55,title:"Valida si un email es válido",hint:"filter_var()",learn:"Validación"},
+    {id:56,title:"Valida si una URL es válida",hint:"filter_var()",learn:"Validación"},
+    {id:57,title:"Sanitiza una entrada de texto",hint:"htmlspecialchars()",learn:"Seguridad"},
+    {id:58,title:"Elimina espacios en blanco",hint:"trim()",learn:"Limpieza"},
+    {id:59,title:"Reemplaza texto en un string",hint:"str_replace()",learn:"Reemplazo"},
+    {id:60,title:"Encuentra la posición de un substring",hint:"strpos()",learn:"Búsqueda"},
+    {id:61,title:"Extrae un substring",hint:"substr()",learn:"Substrings"},
+    {id:62,title:"Convierte string a mayúsculas",hint:"strtoupper()",learn:"Formato"},
+    {id:63,title:"Convierte string a minúsculas",hint:"strtolower()",learn:"Formato"},
+    {id:64,title:"Capitaliza la primera letra",hint:"ucfirst()",learn:"Formato"},
+    {id:65,title:"Cuenta caracteres de un string",hint:"strlen()",learn:"Longitud"},
+    {id:66,title:"Invierte un string",hint:"strrev()",learn:"Manipulación"},
+    {id:67,title:"Repite un string 5 veces",hint:"str_repeat()",learn:"Repetición"},
+    {id:68,title:"Divide un string por coma",hint:"explode()",learn:"Separación"},
+    {id:69,title:"Une un array en string",hint:"implode()",learn:"Unión"},
+    {id:70,title:"Comprueba si un string contiene otra palabra",hint:"str_contains() (PHP 8)",learn:"Búsqueda moderna"}
+  ],
+  media: [
+    {id:71,title:"Crea un formulario de contacto",hint:"HTML + PHP",learn:"Formularios"},
+    {id:72,title:"Valida campos vacíos",hint:"empty()",learn:"Validación"},
+    {id:73,title:"Guarda datos en sesión",hint:"$_SESSION",learn:"Sesiones"},
+    {id:74,title:"Muestra mensaje flash",hint:"Guarda en sesión y borra",learn:"Mensajes flash"},
+    {id:75,title:"Login básico con sesión",hint:"Comparación de usuarios",learn:"Autenticación"},
+    {id:76,title:"Logout destruyendo sesión",hint:"session_destroy()",learn:"Cierre"},
+    {id:77,title:"Crea cookies",hint:"setcookie()",learn:"Cookies"},
+    {id:78,title:"Lee cookies",hint:"$_COOKIE",learn:"Cookies"},
+    {id:79,title:"Sube un archivo al servidor",hint:"$_FILES",learn:"Subida de archivos"},
+    {id:80,title:"Valida tipo de archivo",hint:"mime_content_type()",learn:"Validación de archivos"},
+    {id:81,title:"Renombra archivo subido",hint:"move_uploaded_file()",learn:"Manejo de archivos"},
+    {id:82,title:"Lista archivos de una carpeta",hint:"scandir()",learn:"Directorios"},
+    {id:83,title:"Crea una carpeta",hint:"mkdir()",learn:"Sistema de archivos"},
+    {id:84,title:"Elimina un archivo",hint:"unlink()",learn:"Borrado"},
+    {id:85,title:"Lee contenido de un archivo",hint:"file_get_contents()",learn:"Lectura"},
+    {id:86,title:"Escribe en un archivo",hint:"file_put_contents()",learn:"Escritura"},
+    {id:87,title:"Crea una clase Persona",hint:"class Persona",learn:"Clases"},
+    {id:88,title:"Define propiedades públicas",hint:"public $nombre",learn:"Propiedades"},
+    {id:89,title:"Define un método",hint:"public function saludar()",learn:"Métodos"},
+    {id:90,title:"Crea un objeto",hint:"$p = new Persona()",learn:"Instancias"},
+    {id:91,title:"Usa constructor",hint:"__construct()",learn:"Constructor"},
+    {id:92,title:"Usa destructor",hint:"__destruct()",learn:"Destructor"},
+    {id:93,title:"Define propiedades privadas",hint:"private $edad",learn:"Encapsulamiento"},
+    {id:94,title:"Usa getters y setters",hint:"getEdad(), setEdad()",learn:"Encapsulamiento"},
+    {id:95,title:"Herencia: clase Empleado extiende Persona",hint:"extends",learn:"Herencia"},
+    {id:96,title:"Usa parent::__construct()",hint:"parent::",learn:"Herencia"},
+    {id:97,title:"Define constantes en clase",hint:"const PI = 3.14",learn:"Constantes de clase"},
+    {id:98,title:"Usa métodos estáticos",hint:"public static function",learn:"Estáticos"},
+    {id:99,title:"Accede a método estático",hint:"Clase::metodo()",learn:"Estáticos"},
+    {id:100,title:"Usa self dentro de clase",hint:"self::CONSTANTE",learn:"Contexto de clase"},
+    {id:101,title:"Define una interfaz",hint:"interface",learn:"Interfaces"},
+    {id:102,title:"Implementa una interfaz",hint:"implements",learn:"Interfaces"},
+    {id:103,title:"Define una clase abstracta",hint:"abstract class",learn:"Clases abstractas"},
+    {id:104,title:"Usa traits",hint:"trait",learn:"Reutilización"},
+    {id:105,title:"Manejo de excepciones",hint:"try-catch",learn:"Excepciones"},
+    {id:106,title:"Lanza una excepción",hint:"throw new Exception()",learn:"Excepciones"},
+    {id:107,title:"Conecta PHP con MySQL",hint:"mysqli_connect()",learn:"MySQL"},
+    {id:108,title:"Ejecuta una consulta SELECT",hint:"mysqli_query()",learn:"Consultas"},
+    {id:109,title:"Obtén resultados como array",hint:"mysqli_fetch_assoc()",learn:"Resultados"},
+    {id:110,title:"Inserta un registro",hint:"INSERT INTO",learn:"Inserción"},
+    {id:111,title:"Actualiza un registro",hint:"UPDATE",learn:"Actualización"},
+    {id:112,title:"Elimina un registro",hint:"DELETE",learn:"Eliminación"},
+    {id:113,title:"Usa consultas preparadas",hint:"prepare()",learn:"Seguridad"},
+    {id:114,title:"Evita inyección SQL",hint:"bind_param()",learn:"Seguridad"},
+    {id:115,title:"Cuenta registros devueltos",hint:"mysqli_num_rows()",learn:"Conteo"},
+    {id:116,title:"Usa PDO para conectar",hint:"new PDO()",learn:"PDO"},
+    {id:117,title:"Usa transacciones",hint:"beginTransaction()",learn:"Transacciones"},
+    {id:118,title:"Crea una tabla desde PHP",hint:"CREATE TABLE",learn:"DDL"},
+    {id:119,title:"Manejo de errores de DB",hint:"try-catch + PDO",learn:"Errores"},
+    {id:120,title:"Paginación de resultados",hint:"LIMIT + OFFSET",learn:"Paginación"},
+    {id:121,title:"Búsqueda con LIKE",hint:"WHERE nombre LIKE '%a%'",learn:"Búsquedas"},
+    {id:122,title:"Ordena resultados",hint:"ORDER BY",learn:"Ordenamiento"},
+    {id:123,title:"Filtra por fecha",hint:"WHERE fecha > NOW()",learn:"Filtros"},
+    {id:124,title:"Usa AJAX con PHP",hint:"fetch() + JSON",learn:"AJAX"},
+    {id:125,title:"Devuelve JSON desde PHP",hint:"json_encode()",learn:"APIs"},
+    {id:126,title:"Lee JSON desde PHP",hint:"json_decode()",learn:"APIs"},
+    {id:127,title:"Crea un CRUD completo",hint:"Create, Read, Update, Delete",learn:"CRUD"},
+    {id:128,title:"Valida formulario con JS y PHP",hint:"Doble validación",learn:"Validación"},
+    {id:129,title:"Usa CSRF token",hint:"Token en sesión",learn:"Seguridad"},
+    {id:130,title:"Manejo de errores 404",hint:".htaccess + redirección",learn:"Errores"},
+    {id:131,title:"Crea rutas amigables",hint:"mod_rewrite",learn:"URLs limpias"},
+    {id:132,title:"Usa autoloading",hint:"spl_autoload_register()",learn:"PSR-4"},
+    {id:133,title:"Usa namespace",hint:"namespace App",learn:"Organización"},
+    {id:134,title:"Usa Composer",hint:"composer init",learn:"Dependencias"},
+    {id:135,title:"Instala un paquete con Composer",hint:"composer require",learn:"Paquetes"},
+    {id:136,title:"Usa Dotenv para variables",hint:"vlucas/phpdotenv",learn:"Configuración"},
+    {id:137,title:"Validación con Respect/Validation",hint:"Respect\\Validation",learn:"Librerías"},
+    {id:138,title:"Usa Twig para plantillas",hint:"twig/twig",learn:"Templates"},
+    {id:139,title:"Renderiza vista con Twig",hint:"render()",learn:"MVC"},
+    {id:140,title:"Envía email con PHPMailer",hint:"use PHPMailer\\PHPMailer",learn:"Email"},
+    {id:141,title:"Usa try-catch en email",hint:"Manejo de errores",learn:"Excepciones"},
+    {id:142,title:"Log de errores en archivo",hint:"error_log()",learn:"Logging"},
+    {id:143,title:"Usa Monolog",hint:"monolog/monolog",learn:"Logging avanzado"},
+    {id:144,title:"Crea un archivo CSV",hint:"fputcsv()",learn:"CSV"},
+    {id:145,title:"Lee un CSV",hint:"fgetcsv()",learn:"CSV"},
+    {id:146,title:"Exporta datos MySQL a CSV",hint:"SELECT + fputcsv()",learn:"Exportación"},
+    {id:147,title:"Importa CSV a MySQL",hint:"LOAD DATA o PHP",learn:"Importación"},
+    {id:148,title:"Genera PDF con Dompdf",hint:"dompdf/dompdf",learn:"PDF"},
+    {id:149,title:"Genera imagen con GD",hint:"imagecreate()",learn:"Gráficos"},
+    {id:150,title:"Valida tamaño de imagen",hint:"getimagesize()",learn:"Validación"}
+  ],
+  dificil: [
+    {id:151,title:"Crea una API REST con Slim",hint:"slim/slim",learn:"REST"},
+    {id:152,title:"Define rutas GET/POST/PUT/DELETE",hint:"Slim\\App",learn:"Rutas"},
+    {id:153,title:"Usa middleware",hint:"add()",learn:"Middleware"},
+    {id:154,title:"Autenticación con JWT",hint:"firebase/php-jwt",learn:"JWT"},
+    {id:155,title:"Valida tokens en cada request",hint:"Headers",learn:"Seguridad"},
+    {id:156,title:"Usa OAuth2 con Google",hint:"league/oauth2-client",learn:"OAuth"},
+    {id:157,title:"Integra Stripe para pagos",hint:"stripe/stripe-php",learn:"Pagos"},
+    {id:158,title:"Webhook de Stripe",hint:"file_get_contents('php://input')",learn:"Webhooks"},
+    {id:159,title:"Usa caché con Redis",hint:"predis/predis",learn:"Caché"},
+    {id:160,title:"Usa caché con APCu",hint:"apcu_*",learn:"Caché local"},
+    {id:161,title:"Implementa patrón Repository",hint:"Capa de datos",learn:"Arquitectura"},
+    {id:162,title:"Implementa patrón Factory",hint:"Creación de objetos",learn:"Diseño"},
+    {id:163,title:"Usa Dependency Injection",hint:"Contenedor",learn:"SOLID"},
+    {id:164,title:"Usa PHPUnit para testing",hint:"phpunit/phpunit",learn:"Testing"},
+    {id:165,title:"Escribe test para función suma",hint:"assertEquals()",learn:"TDD"},
+    {id:166,title:"Mockea servicios externos",hint:"createMock()",learn:"Mocking"},
+    {id:167,title:"Test de integración con DB",hint:"setUp(), tearDown()",learn:"Testing"},
+    {id:168,title:"Usa fixtures",hint:"Datos de prueba",learn:"Testing"},
+    {id:169,title:"Configura GitHub Actions",hint:".yml",learn:"CI/CD"},
+    {id:170,title:"Despliega en Heroku",hint:"Procfile",learn:"Despliegue"},
+    {id:171,title:"Despliega en Docker",hint:"Dockerfile",learn:"Contenedores"},
+    {id:172,title:"Usa Nginx + PHP-FPM",hint:"Configuración",learn:"Servidor"},
+    {id:173,title:"Usa Laravel Eloquent fuera de Laravel",hint:"illuminate/database",learn:"ORM"},
+    {id:174,title:"Migrations con Phinx",hint:"robmorgan/phinx",learn:"Migraciones"},
+    {id:175,title:"Usa Tinker para pruebas",hint:"psy/psysh",learn:"REPL"},
+    {id:176,title:"Implementa patrón Observer",hint:"Eventos",learn:"Diseño"},
+    {id:177,title:"Usa colas con RabbitMQ",hint:"php-amqplib",learn:"Colas"},
+    {id:178,title:"Procesa tareas en segundo plano",hint:"exec() + cron",learn:"Tareas"},
+    {id:179,title:"Usa WebSockets con Ratchet",hint:"ratchet/pawl",learn:"Tiempo real"},
+    {id:180,title:"Chat en tiempo real",hint:"JS + PHP",learn:"WebSockets"},
+    {id:181,title:"Usa GraphQL",hint:"webonyx/graphql-php",learn:"GraphQL"},
+    {id:182,title:"Implementa paginación con cursores",hint:"Offset vs cursor",learn:"Rendimiento"},
+    {id:183,title:"Optimiza consultas con índices",hint:"EXPLAIN",learn:"SQL avanzado"},
+    {id:184,title:"Usa vistas materializadas",hint:"SQL",learn:"Rendimiento"},
+    {id:185,title:"Crea comando CLI",hint:"symfony/console",learn:"CLI"},
+    {id:186,title:"Crea tarea Artisan fuera de Laravel",hint:"symfony/console",learn:"CLI"},
+    {id:187,title:"Genera sitemap dinámico",hint:"SimpleXMLElement",learn:"SEO"},
+    {id:188,title:"Genera RSS",hint:"DOMDocument",learn:"RSS"},
+    {id:189,title:"Usa patrones de diseño: Strategy",hint:"Intercambio de algoritmos",learn:"Diseño"},
+    {id:190,title:"Usa patrones: Adapter",hint:"Adaptar interfaces",learn:"Diseño"},
+    {id:191,title:"Usa patrones: Decorator",hint:"Extender funcionalidad",learn:"Diseño"},
+    {id:192,title:"Refactoriza con reglas SOLID",hint:"Aplicar principios",learn:"Calidad"},
+    {id:193,title:"Usa análisis estático con PHPStan",hint:"phpstan/phpstan",learn:"Calidad"},
+    {id:194,title:"Usa Psalm",hint:"vimeo/psalm",learn:"Análisis"},
+    {id:195,title:"Usa pre-commit hooks",hint:"grumphp",learn:"Calidad"},
+    {id:196,title:"Documenta con PHPDoc",hint:"@param",learn:"Documentación"},
+    {id:197,title:"Usa Swagger/OpenAPI",hint:"zircote/swagger-php",learn:"APIs"},
+    {id:198,title:"Genera SDK con OpenAPI",hint:"openapi-generator",learn:"SDK"},
+    {id:199,title:"Crea microservicio con Lumen",hint:"lumen/lumen",learn:"Microservicios"},
+    {id:200,title:"Despliega en Kubernetes",hint:"k8s",learn:"Orquestación"}
+  ]
+};
+
+/* ---------- Lógica ---------- */
+const storageKey = 'phpChecklist';
+let checked = JSON.parse(localStorage.getItem(storageKey) || '{}');
+
+const checklist = document.getElementById('checklist');
+const searchInput = document.getElementById('search');
+
+function render(filter = '') {
+  checklist.innerHTML = '';
+  ['facil','media','dificil'].forEach(level=>{
+    const list = data[level].filter(e=>!filter || e.title.toLowerCase().includes(filter) || e.hint.toLowerCase().includes(filter));
+    if(!list.length) return;
+    const done = list.filter(e=>checked[e.id]).length;
+    const section = document.createElement('section');
+    section.className = `section ${level}`;
+    section.innerHTML = `
+      <h2>${level==='facil'?'🟢':level==='media'?'🟡':'🔴'} ${level.toUpperCase()} – ${list.length} ejercicios</h2>
+      <div class="progress-bar"><div class="progress-fill" style="width:${(done/list.length)*100}%"></div></div>
+      <ul>${list.map(e=>`
+        <li>
+          <input type="checkbox" id="c${e.id}" ${checked[e.id]?'checked':''} onchange="toggle(${e.id})">
+          <label for="c${e.id}">
+            <strong>${e.id}. ${e.title}</strong><br/>
+            <small>Pista: ${e.hint} · ${e.learn}</small>
+          </label>
+        </li>`).join('')}
+      </ul>`;
+    checklist.appendChild(section);
+  });
+}
+
+function toggle(id){
+  checked[id] = !checked[id];
+  localStorage.setItem(storageKey, JSON.stringify(checked));
+  render(searchInput.value.toLowerCase());
+}
+
+function resetProgress(){
+  if(confirm('¿Seguro que quieres reiniciar todo el progreso?')){
+    checked = {};
+    localStorage.removeItem(storageKey);
+    render();
+  }
+}
+
+searchInput.addEventListener('input', e=>render(e.target.value.toLowerCase()));
+render();
+</script>
+</body>
+</html>
